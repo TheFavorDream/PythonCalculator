@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="Icons">
+    <file>Radical.svg</file>
+  </qresource>
+</RCC>
