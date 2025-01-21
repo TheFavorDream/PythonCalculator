@@ -1,15 +1,13 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from Compiler import Compiler
 
 class Ui_Calculator(object):
     
     def __init__(self):
         super().__init__()
+        self.Com = Compiler()
         self.IsOnAdvanceMode = False
-        self.InputList = []
         self.DisplayText = ""
-        self.NumberBase = 10
-
 
 
     def AdvanceMode(self):
@@ -22,15 +20,22 @@ class Ui_Calculator(object):
                 Calculator.setMinimumSize(QtCore.QSize(300, 400))
                 Calculator.setMaximumSize(QtCore.QSize(300, 400))
 
-
     def SetInput(self, In):
-
-         self.InputList.append(In)
          self.DisplayText += str(In)
          self.Display.setText(self.DisplayText)
+         self.Com.SetString(self.DisplayText)
 
-    def SetBase(self, Base):
-         self.NumberBase = Base
+    
+
+    def ClearInput(self):
+         self.DisplayText = ""
+         self.Display.setText(self.DisplayText)
+
+    def Backspace(self):
+         if len(self.DisplayText) == 0:
+              return
+         self.DisplayText = self.DisplayText[0 : len(self.DisplayText)-1]
+         self.Display.setText(self.DisplayText)
 
     def setupUi(self, Calculator):
         Calculator.setObjectName("Calculator")
@@ -96,7 +101,7 @@ class Ui_Calculator(object):
         self.Display.setStyleSheet("color: rgb(255, 255, 255);\n"
 "")
         self.Display.setObjectName("Display")
-        self.BTN_OP_Equal = QtWidgets.QPushButton(self.centralwidget)
+        self.BTN_OP_Equal = QtWidgets.QPushButton(self.centralwidget, clicked=lambda:self.Com.Calculate(self.Display))
         self.BTN_OP_Equal.setGeometry(QtCore.QRect(130, 310, 41, 41))
         self.BTN_OP_Equal.setStyleSheet("\n"
 "background-color: rgb(255, 193, 37);")
@@ -121,17 +126,17 @@ class Ui_Calculator(object):
         self.BTN_OP_Devide.setStyleSheet("\n"
 "background-color: rgb(255, 193, 37);")
         self.BTN_OP_Devide.setObjectName("BTN_OP_Devide")
-        self.BTN_Backspace = QtWidgets.QPushButton(self.centralwidget)  
+        self.BTN_Backspace = QtWidgets.QPushButton(self.centralwidget, clicked=lambda: self.Backspace())  
         self.BTN_Backspace.setGeometry(QtCore.QRect(230, 260, 41, 41))
         self.BTN_Backspace.setStyleSheet("\n"
 "background-color: rgb(255, 193, 37);")
         self.BTN_Backspace.setObjectName("BTN_Backspace")
-        self.BTN_Clear = QtWidgets.QPushButton(self.centralwidget)
+        self.BTN_Clear = QtWidgets.QPushButton(self.centralwidget, clicked=lambda:self.ClearInput())
         self.BTN_Clear.setGeometry(QtCore.QRect(230, 310, 41, 41))
         self.BTN_Clear.setStyleSheet("\n"
 "background-color: rgb(255, 193, 37);")
         self.BTN_Clear.setObjectName("BTN_Clear")
-        self.BTN_Parantes = QtWidgets.QPushButton(self.centralwidget)
+        self.BTN_Parantes = QtWidgets.QPushButton(self.centralwidget, clicked=lambda:self.SetInput("("))
         self.BTN_Parantes.setGeometry(QtCore.QRect(30, 110, 41, 31))
         self.BTN_Parantes.setStyleSheet("background-color: rgb(255, 193, 37);")
         self.BTN_Parantes.setObjectName("BTN_Parantes")
@@ -140,7 +145,7 @@ class Ui_Calculator(object):
         self.BTN_Cos.setStyleSheet("\n"
 "background-color: rgb(255, 193, 37);")
         self.BTN_Cos.setObjectName("BTN_Cos")
-        self.BTN_Pars_Open = QtWidgets.QPushButton(self.centralwidget)
+        self.BTN_Pars_Open = QtWidgets.QPushButton(self.centralwidget, clicked=lambda:self.SetInput(")"))
         self.BTN_Pars_Open.setGeometry(QtCore.QRect(80, 110, 41, 31))
         self.BTN_Pars_Open.setStyleSheet("\n"
 "background-color: rgb(255, 193, 37);")
