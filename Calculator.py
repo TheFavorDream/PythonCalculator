@@ -1,11 +1,12 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from Compiler import Compiler
+
+from ComputeEngine import ComputeEngine
 
 class Ui_Calculator(object):
     
     def __init__(self):
         super().__init__()
-        self.Com = Compiler()
+        self.ComE = ComputeEngine()
         self.IsOnAdvanceMode = False
         self.DisplayText = ""
 
@@ -23,9 +24,11 @@ class Ui_Calculator(object):
     def SetInput(self, In):
          self.DisplayText += str(In)
          self.Display.setText(self.DisplayText)
-         self.Com.SetString(self.DisplayText)
 
-    
+    def Calculate(self):
+         Sum = self.ComE.Calculate(self.DisplayText)
+         self.DisplayText = str(Sum)
+         self.Display.setText(self.DisplayText)
 
     def ClearInput(self):
          self.DisplayText = ""
@@ -36,6 +39,8 @@ class Ui_Calculator(object):
               return
          self.DisplayText = self.DisplayText[0 : len(self.DisplayText)-1]
          self.Display.setText(self.DisplayText)
+
+
 
     def setupUi(self, Calculator):
         Calculator.setObjectName("Calculator")
@@ -101,7 +106,7 @@ class Ui_Calculator(object):
         self.Display.setStyleSheet("color: rgb(255, 255, 255);\n"
 "")
         self.Display.setObjectName("Display")
-        self.BTN_OP_Equal = QtWidgets.QPushButton(self.centralwidget, clicked=lambda:self.Com.Calculate(self.Display))
+        self.BTN_OP_Equal = QtWidgets.QPushButton(self.centralwidget, clicked=lambda:self.Calculate())
         self.BTN_OP_Equal.setGeometry(QtCore.QRect(130, 310, 41, 41))
         self.BTN_OP_Equal.setStyleSheet("\n"
 "background-color: rgb(255, 193, 37);")
@@ -234,7 +239,7 @@ class Ui_Calculator(object):
         self.BTN_OP_Logarithm.setStyleSheet("\n"
 "background-color: rgb(255, 193, 37);")
         self.BTN_OP_Logarithm.setObjectName("BTN_OP_Logarithm")
-        self.BTN_OP_Exponent = QtWidgets.QPushButton(self.centralwidget)
+        self.BTN_OP_Exponent = QtWidgets.QPushButton(self.centralwidget, clicked=lambda: self.SetInput("^"))
         self.BTN_OP_Exponent.setGeometry(QtCore.QRect(320, 160, 41, 41))
         self.BTN_OP_Exponent.setStyleSheet("\n"
 "background-color: rgb(255, 193, 37);")
